@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>美食圈子</title>
+  <link rel="stylesheet" type="text/css" href="http://www.iplaystone.com/static/cn/act/201711/lib/base.css">
+	<link rel="stylesheet" type="text/css" href="http://www.iplaystone.com/static/common/css/common.css">
+	<script src="http://www.iplaystone.com/static/cn/act/201711/lib/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="//www.iplaystone.com/static/common/js/custom/??/getter.js,common.js,footer.js"></script>-->
+    <script type="text/javascript" src="static/js/header.js"></script>
+    <script type="text/javascript" src="static/js/getter.js"></script>
+    <script type="text/javascript" src="static/js/common.js"></script>
+  </head>
+  <body>
+    <div id="stone_header"></div>
+    <div id="app"></div>
+   <!-- <div id="stone_footer"></div>-->
+    <script>
+    var userAgent = navigator.userAgent
+    var isStone = false
+    var requestSource = ''
+    if(userAgent.search(/Stone/) == -1){//pc
+        isStone = false
+        stoneHeader.init(2)
+        requestSource = 'iplaystone'
+    }else{//stone
+        isStone = false
+        requestSource = 'stoneBrowser'
+        $("#stone_header,#stone_footer").remove()
+    }
+    </script>
+  </body>
+</html>
