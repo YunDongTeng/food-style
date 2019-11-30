@@ -1,6 +1,6 @@
 var urlObj = {
   /* baseUrl: 'http://192.168.103.195:8081', */
-  baseUrl: 'http://localhost:8081',
+  baseUrl: 'http://192.168.103.195:8081',
   indexUrl: 'http://localhost:8080'
 }
 

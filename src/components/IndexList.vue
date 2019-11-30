@@ -243,7 +243,7 @@
         }
         vm.$http({
           /* url: '//moment.snail.com/api/v1/post/list-of-hot-circle-post', */
-          url: 'http://localhost:8081/food/list',
+          url: 'http://192.168.103.195:8081/food/list',
           method: 'get',
           params: Jdata,
           /* jsonp: 'callback', */
@@ -281,8 +281,7 @@
         'title': window.localStorage.getItem('search_content')
       }
       vm.$http({
-        /* url: '//moment.snail.com/api/v1/post/list-of-hot-circle-post', */
-        url: 'http://localhost:8081/food/list',
+        url: 'http://192.168.103.195:8081/food/list',
         method: 'get',
         params: Jdata,
         /* jsonp: 'callback', */

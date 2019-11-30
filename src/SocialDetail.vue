@@ -295,7 +295,7 @@
 
         var vm = this
         vm.$http({
-          url: 'http://localhost:8081/food/delete/' + foodId,
+          url: 'http://192.168.103.195:8081/food/delete/' + foodId,
           method: 'post',
           /* jsonp: 'callback', */
           emulateJSON: true,
@@ -377,12 +377,7 @@
         var _this = this
         document.getElementsByClassName('w-e-text')[0].blur()
         if (text !== '') {
-          // setTimeout(function () {
-          //   document.getElementsByClassName('w-e-text')[0].focus()
-          //   _this.postHtml(_this.postId, _this.editorContent)
-          // }, 10)
           _this.postHtml(_this.postId, text)
-          // console.log(_this.editor.txt.html())
         }
       },
       postHtml: function (postId, editorContent) {
@@ -400,8 +395,7 @@
               this.editorContent = 'no'
 
               vm.$http({
-              /* url: '//moment.snail.com/api/v1/post/detail-of-circle-post', */
-                url: 'http://localhost:8081/food/detail/' + this.postId,
+                url: 'http://192.168.103.195:8081/food/detail/' + this.postId,
                 method: 'get',
               /* jsonp: 'callback', */
                 emulateJSON: true,
@@ -411,8 +405,6 @@
               }).then(function (res) {
                 console.log(res.data)
                 if (res.data.code === 200) {
-                /* this.DetailLandlord = res.data
-                this.DetailLandlord['onLandlord'] = false */
                   this.DetailLandlord = res.data.data
                   this.DetailLandlord['onLandlord'] = false
                   this.DetailLandlord.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png'
@@ -428,11 +420,6 @@
                  window.location.href = url */
                 }
               })
-            /* this.monitor(this.all)
-             document.getElementById('postErrts').style.display = 'none'
-             document.getElementsByClassName('w-e-text')[0].innerHTML = '<p><br/></p>'
-             this.editorContent = 'no'
-             this.goBottom() */
             } else {
               document.getElementById('postErrts').style.display = 'inline-block'
               document.getElementById('postErrts').innerHTML = res.data.message
@@ -565,7 +552,7 @@
           this.DetailLandlord.praise = this.DetailLandlord.praise + 1
           var vm = this
           vm.$http({
-            url: 'http://localhost:8081/food/zan',
+            url: 'http://192.168.103.195:8081/food/zan',
             method: 'jsonp',
             params: {
               'id': foodId
@@ -701,7 +688,7 @@
         console.log(content, id, foodId)
 
         var vm = this
-        vm.$http.post('http://localhost:8081/comment/save', {
+        vm.$http.post('http://192.168.103.195:8081/comment/save', {
           foodId: foodId,
           content: content,
           cId: id,
@@ -713,7 +700,7 @@
 
               vm.$http({
               /* url: '//moment.snail.com/api/v1/post/detail-of-circle-post', */
-                url: 'http://localhost:8081/food/detail/' + this.postId,
+                url: 'http://192.168.103.195:8081/food/detail/' + this.postId,
                 method: 'get',
               /* jsonp: 'callback', */
                 emulateJSON: true,
@@ -788,7 +775,7 @@
         this.isLogin = false
       } else {
         vm.$http({
-          url: 'http://localhost:8081/userInfo/get/' + userId,
+          url: 'http://192.168.103.195:8081/userInfo/get/' + userId,
           method: 'get',
           jsonp: 'callback',
           emulateJSON: true,
@@ -804,7 +791,7 @@
       }
       vm.$http({
         /* url: '//moment.snail.com/api/v1/post/detail-of-circle-post', */
-        url: 'http://localhost:8081/food/detail/' + this.postId,
+        url: 'http://192.168.103.195:8081/food/detail/' + this.postId,
         method: 'get',
         /* jsonp: 'callback', */
         emulateJSON: true,
@@ -814,8 +801,6 @@
       }).then(function (res) {
         console.log(res.data)
         if (res.data.code === 200) {
-          /* this.DetailLandlord = res.data
-          this.DetailLandlord['onLandlord'] = false */
           this.DetailLandlord = res.data.data
           this.DetailLandlord['onLandlord'] = false
           this.DetailLandlord.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png'

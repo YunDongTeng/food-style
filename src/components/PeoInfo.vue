@@ -44,7 +44,6 @@
         info: {},
         isLogin: false,
         myCircleListDetail: []
-        // showMoreMyCircle: true
       }
     },
     methods: {
@@ -62,7 +61,7 @@
         this.isLogin = false
       } else {
         vm.$http({
-          url: 'http://localhost:8081/userInfo/get/' + userId,
+          url: 'http://192.168.103.195:8081/userInfo/get/' + userId,
           method: 'get',
           jsonp: 'callback',
           emulateJSON: true,
@@ -78,23 +77,6 @@
           }
         })
       }
-      vm.$http({
-        url: '//moment.snail.com/api/v1/user/my-circles',
-        method: 'jsonp',
-        jsonp: 'callback',
-        emulateJSON: true,
-        headers: {
-          'Content-Type': 'x-www-from-urlencoded'
-        }
-      }).then(function (res) {
-        if (res.data.code === 200) {
-          this.myCircleListDetail = res.data.list
-          if (res.data.list.length < 7) {
-            document.getElementById('showMoreMyCircle').style.display = 'none'
-            document.getElementById('myCircleList').style.height = 'auto'
-          }
-        }
-      })
     }
   }
 </script>
