@@ -165,7 +165,7 @@
         }
         var vm = this
 
-        vm.$http.post('http://192.168.103.195:8081/food/save', {
+        vm.$http.post('http://localhost:8081/food/save', {
           content: text,
           title: title,
           userId: userId,
@@ -188,7 +188,7 @@
       if (param.foodId !== 'new') {
         var vm = this
         vm.$http({
-          url: 'http://192.168.103.195:8081/food/detail/' + param.foodId,
+          url: 'http://localhost:8081/food/detail/' + param.foodId,
           method: 'post',
           /* jsonp: 'callback', */
           emulateJSON: true,

@@ -88,12 +88,8 @@
   </div>
 </template>
 <script>
-  import pagination from './pagination.vue'
   export default {
     name: 'IndexList',
-    components: {
-      pagination: pagination
-    },
     watch: {
       currentPage: 'requestData',
       list: {
@@ -131,24 +127,6 @@
       ShowLoginPop: function () {
         document.getElementById('login_pop').style.display = 'block'
         document.getElementById('stone_mask').style.display = 'block'
-      },
-      // Join quanzi
-      JoinQz: function (qzId, temp) {
-        if (document.getElementById('pdLogin').value === 'true') {
-          let JoinUrl = '//moment.snail.com/api/v1/circle/join'
-          this.JoinState(qzId, JoinUrl, 'join', temp)
-        } else {
-          // alert('清闲登陆1')
-          this.ShowLoginPop()
-        }
-      },
-      QuitQz: function (qzId, temp) {
-        if (document.getElementById('pdLogin').value === 'true') {
-          let QuitUrl = '//moment.snail.com/api/v1/circle/leave'
-          this.JoinState(qzId, QuitUrl, 'quit', temp)
-        } else {
-          this.ShowLoginPop()
-        }
       },
       JoinState: function (qzId, url, flag, temp) {
         const vm = this
@@ -242,33 +220,15 @@
           'page': page
         }
         vm.$http({
-          /* url: '//moment.snail.com/api/v1/post/list-of-hot-circle-post', */
-          url: 'http://192.168.103.195:8081/food/list',
+          url: 'http://localhost:8081/food/list',
           method: 'get',
           params: Jdata,
-          /* jsonp: 'callback', */
           emulateJSON: true,
           headers: {
             'Content-Type': 'x-www-from-urlencoded'
           }
         }).then(function (res) {
           console.log(res)
-          /* for (var i in res.data.list) {
-            res.data.list[i]['flag'] = false
-            res.data.list[i]['showindex'] = 0
-            this.list.push(res.data.list[i])
-          }
-          this.all = res.data.totalPage
-          if (res.data.totalPage === 0 || res.data.totalPage < 2) {
-            this.all = 1
-            this.load = false
-            this.drownReflushText = true
-            this.drownReflush = false
-          } else {
-            this.load = false
-            this.drownReflush = true
-            this.drownReflushText = true
-          } */
         })
       }
     },
@@ -281,10 +241,9 @@
         'title': window.localStorage.getItem('search_content')
       }
       vm.$http({
-        url: 'http://192.168.103.195:8081/food/list',
+        url: 'http://localhost:8081/food/list',
         method: 'get',
         params: Jdata,
-        /* jsonp: 'callback', */
         emulateJSON: true,
         headers: {
           'Content-Type': 'x-www-from-urlencoded'

@@ -8,9 +8,6 @@ import SocialPost from '@/SocialPost'
 Vue.use(Router)
 
 export default new Router({
-  // mode: 'history',
-  // hashbang: false,
-  // history: false,
   routes: [
     {
       path: '/',

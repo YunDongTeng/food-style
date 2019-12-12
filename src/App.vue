@@ -6,7 +6,6 @@
 </template>
 
 <script>
-// import statistics from 'http://static.snail.com/js/stone/v2/statistics_ty_v2.source.js'
 export default {
   name: 'app',
   computed: {
@@ -21,22 +20,6 @@ export default {
     document.body.appendChild(s)
   },
   created: function () {
-   /* var vm = this
-    vm.$http({
-      url: '//moment.snail.com/api/v1/user/info',
-      method: 'jsonp',
-      jsonp: 'callback',
-      emulateJSON: true,
-      headers: {
-        'Content-Type': 'x-www-from-urlencoded'
-      }
-    }).then(function (res) {
-      if (res.data.code === 200) {
-        document.getElementById('pdLogin').value = 'true'
-      } else {
-        document.getElementById('pdLogin').value = 'false'
-      }
-    }) */
   }
 }
 </script>

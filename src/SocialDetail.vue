@@ -59,7 +59,7 @@
             <div class="Jitems">
               <div class="JitemsLeft fl">
                 <div class="J-UserInfo">
-                  <div class="J-UserInfo-Pic"><img src="http://www.iplaystone.com/static/common/images/loginPic.png"
+                  <div class="J-UserInfo-Pic"><img :src="list.url"
                                                    :alt="list.nickName"/></div>
                   <span class="J-UserInfo-Name textOverFlow" :title="list.nickName" :data-userid="list.user_id">{{list.nickName}}</span>
                   <span class="J-UserInfo-adminCall" v-show="list.is_post_by_admin">管理员</span>
@@ -153,12 +153,6 @@
           </li>
         </ul>
       </div>
-      <!--  <div class="ListPage Page-Bootom">
-            <pagination :cur.sync="cur" :all.sync="all" :isJump.sync="isJump"  @listen="monitor"></pagination>
-
-            <router-link class="goBack cur"  :to="{ name: 'circleIdircle', params: {'circleId':circleId}}" wn_tj_click_href wn_tj_click_gameId wn_tj_click_excel="previous_page" wn_tj_click_id><img src="./images/icon14.png"/>返回{{HdInfoData.name}}</router-link>
-
-        </div>-->
       <div class="ListPage Page-Bootom"></div>
       <div class="LidtEditor bgWhite" id="LidtEditor">
         <div class="Editor">
@@ -172,8 +166,8 @@
           <p>游客不能回复哦~</p>
           <div class="loginMaskBox">
             <a href="javascript:;" @click="detailLogin()">登录</a>
-            <a href="javascript:;" class="loginMaskBoxline"></a>
-            <a href="http://www.iplaystone.com/static/web/register.html">注册</a>
+            <!--<a href="javascript:;" class="loginMaskBoxline"></a>
+            <a href="http://www.iplaystone.com/static/web/register.html">注册</a>-->
           </div>
         </div>
       </div>
@@ -182,41 +176,23 @@
 
       <PeoInfo :showMoreMyCircle.sync="showMoreMyCircle"></PeoInfo>
       <SocialIndexHot></SocialIndexHot>
-      <!--<SocialIndexRecommend id ="SocialIndexRecommend"></SocialIndexRecommend>-->
       <span class="goTop cur" v-show="isGoTop" @click="goTop()"></span>
     </div>
-    <!-- <rulePop :isPopInfo="isPopInfo" :DetailLandlord="DetailLandlord" :cur="cur" @abc="delComment"></rulePop>-->
     <div class="divmask a" v-show="isPostManageMask" @click="closeMask"></div>
   </div>
 
 </template>
 
 <script>
-  import SocialIndexHeader from './components/SocialIndexHeader.vue'
-  import SocialIndexAdmin from './components/SocialIndexAdmin.vue'
   import SocialIndexHot from './components/SocialIndexHot.vue'
   import PeoInfo from './components/PeoInfo.vue'
-  import SocialIndexDetail from './components/SocialIndexDetail.vue'
-  import SocialIndexRecommend from './components/SocialIndexRecommend.vue'
-  import pagination from './components/pagination.vue'
-  import rulePop from './components/rulePop.vue'
   import E from 'wangeditor'
-  // import statistics from 'http://static.snail.com/js/stone/v2/statistics_ty_v2.source.js'
-  // import Store from 'Store'
 
   export default {
     name: 'SocialDetail',
     components: {
-      SocialIndexHeader: SocialIndexHeader,
-      SocialIndexAdmin: SocialIndexAdmin,
       PeoInfo: PeoInfo,
-      SocialIndexHot: SocialIndexHot,
-      SocialIndexDetail: SocialIndexDetail,
-      SocialIndexRecommend: SocialIndexRecommend,
-      pagination: pagination,
-      rulePop: rulePop
-      // Store: Store
-      // statistics: statistics
+      SocialIndexHot: SocialIndexHot
     },
     watch: {
       DetailList: {
@@ -295,7 +271,7 @@
 
         var vm = this
         vm.$http({
-          url: 'http://192.168.103.195:8081/food/delete/' + foodId,
+          url: 'http://localhost:8081/food/delete/' + foodId,
           method: 'post',
           /* jsonp: 'callback', */
           emulateJSON: true,
@@ -313,38 +289,9 @@
         console.log(foodId)
         this.$router.push({path: '/SocialPost/' + foodId, params: {'id': foodId}})
       },
-      isAdmin: function (temp, data) { // 删除 置顶 加精
-        this.isPopInfo.isMaskShow = true
-        this.isPopInfo.isPopShow = true
-        this.isPostManageMask = false
-        this.isPostManage = false
-        if (temp === 0) { // 置顶
-          this.isPopInfo.isPopTsShow = 0
-        } else if (temp === 1) { // 加精
-          this.isPopInfo.isPopTsShow = 1
-        } else if (temp === 2) { // 删除主贴
-          this.isPopInfo.isPopTsShow = 2
-        } else if (temp === 3) { // 删除评论
-          this.isPopInfo.isPopTsShow = 3
-          this.isPopInfo.commentId = data
-        } else if (temp === 4) { // 官方贴
-          this.isPopInfo.isPopTsShow = 4
-        } else if (temp === 5) { // FAQ贴
-          this.isPopInfo.isPopTsShow = 5
-        }
-      },
       closeMask: function () {
         this.isPostManage = false
         this.isPostManageMask = false
-      },
-      showPostManage: function () { // 显示管理列表
-        if (this.isPostManage === false) {
-          this.isPostManage = true
-          this.isPostManageMask = true
-        } else {
-          this.isPostManage = false
-          this.isPostManageMask = false
-        }
       },
       handleScroll: function () {
         const windheight = window.innerHeight
@@ -370,9 +317,6 @@
           this.isGoTop = false
         }
       },
-      delComment: function (commentId) { // 删除评论
-        this.monitor(this.cur)
-      },
       getContent: function (text) { // 发送评论
         var _this = this
         document.getElementsByClassName('w-e-text')[0].blur()
@@ -395,7 +339,7 @@
               this.editorContent = 'no'
 
               vm.$http({
-                url: 'http://192.168.103.195:8081/food/detail/' + this.postId,
+                url: 'http://localhost:8081/food/detail/' + this.postId,
                 method: 'get',
               /* jsonp: 'callback', */
                 emulateJSON: true,
@@ -407,11 +351,11 @@
                 if (res.data.code === 200) {
                   this.DetailLandlord = res.data.data
                   this.DetailLandlord['onLandlord'] = false
-                  this.DetailLandlord.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png'
+                  this.DetailLandlord.user_photo = this.DetailLandlord.url
 
                   this.DetailList = res.data.data.commentVoList
 
-                  this.DetailList.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png'
+                  this.DetailList.user_photo = this.DetailLandlord.url
 
                   document.getElementById('postErrts').style.display = 'none'
                   document.getElementsByClassName('w-e-text')[0].innerHTML = '<p><br/></p>'
@@ -472,26 +416,12 @@
           this.LoadHtml(1, 1)
         }
       },
-      monitor: function (data) { // 分页
-        this.cur = data
-        this.LoadHtml(data, this.isOnLandlord)
-        if (data > 1) {
-          this.isOne = false // 第二页 楼主不现实
-        } else {
-          this.isOne = true
-        }
-      },
       ShowMoudleList: function (temp, num, commentUserId) { // 显示评论列表
         this.DetailList[temp]['isMoudleListInput'] = true
         this.DetailList[temp]['isReplay'] = false
         this.DetailList[temp]['UserNickName'] = ''
         this.DetailList[temp]['listId'] = commentUserId
         this.DetailList[temp]['userId'] = ''
-      },
-      HideMoudleList: function (temp) { // 关闭评论列表
-        this.DetailList[temp]['isReplay'] = true
-        this.DetailList[temp]['UserNickName'] = ''
-        this.DetailList[temp]['isMoudleListInput'] = false
       },
       JMoudleReply: function (userId, commentUserId, userNickName, temp, event, id) { // 回复
         if (document.getElementById('pdLogin').value === 'true') {
@@ -552,7 +482,7 @@
           this.DetailLandlord.praise = this.DetailLandlord.praise + 1
           var vm = this
           vm.$http({
-            url: 'http://192.168.103.195:8081/food/zan',
+            url: 'http://localhost:8081/food/zan',
             method: 'jsonp',
             params: {
               'id': foodId
@@ -609,29 +539,6 @@
           }
         })
       },
-      /* RefreshHdInfo: function () { // 刷新楼主投票
-         var vm = this
-         vm.$http({
-           url: '//moment.snail.com/api/v1/post/detail-of-circle-post',
-           method: 'jsonp',
-           params: {
-             'post_id': this.postId
-           },
-           jsonp: 'callback',
-           emulateJSON: true,
-           headers: {
-             'Content-Type': 'x-www-from-urlencoded'
-           }
-         }).then(function (res) {
-           if (res.data.code === 200) {
-             this.DetailLandlord = res.data.info
-             this.DetailLandlord['onLandlord'] = false
-           } else if (res.data.code === 404) {
-             var url = 'http://stone.snail.com/error/404.html?from=circle&type=1&circleId=' + this.circleId
-             window.location.href = url
-           }
-         })
-       }, */
       showMore: function (commentid, page, pagesize, temp) { // 显示评论列表
         var _this = this
         _this.$http({
@@ -656,39 +563,13 @@
           }
         })
       },
-      // 页码点击事件
-      btnClick: function (current, index, postId) {
-        if (current < 1) return
-        if (current !== this.DetailList[index].current) {
-          this.DetailList[index].current = current
-          this.showMore(postId, current, 10, index)
-        }
-      },
-      // 下一页
-      nextPage: function (current, allpage, postId, index) {
-        if (current >= allpage) return
-        this.btnClick(current + 1, index, postId)
-      },
-      // 上一页
-      prvePage: function (current, postId, index) {
-        if (current <= 1) return
-        this.btnClick(current - 1, index, postId)
-      },
-      // 设置按钮禁用样式
-      setButtonClass: function (isNextButton, index) {
-        if (isNextButton) {
-          return this.DetailList[index].current >= this.DetailList[index].allpage ? 'page-button-disabled' : ''
-        } else {
-          return this.DetailList[index].current <= 1 ? 'page-button-disabled' : ''
-        }
-      },
       postComment: function (id, temp, foodId) { // 发表评论
         var content = document.getElementById('J' + id).value
         if (!content) return
         console.log(content, id, foodId)
 
         var vm = this
-        vm.$http.post('http://192.168.103.195:8081/comment/save', {
+        vm.$http.post('http://localhost:8081/comment/save', {
           foodId: foodId,
           content: content,
           cId: id,
@@ -699,10 +580,8 @@
               this.editorContent = 'no'
 
               vm.$http({
-              /* url: '//moment.snail.com/api/v1/post/detail-of-circle-post', */
-                url: 'http://192.168.103.195:8081/food/detail/' + this.postId,
+                url: 'http://localhost:8081/food/detail/' + this.postId,
                 method: 'get',
-              /* jsonp: 'callback', */
                 emulateJSON: true,
                 headers: {
                   'Content-Type': 'x-www-from-urlencoded'
@@ -714,11 +593,12 @@
                 this.DetailLandlord['onLandlord'] = false */
                   this.DetailLandlord = res.data.data
                   this.DetailLandlord['onLandlord'] = false
-                  this.DetailLandlord.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png'
+                  /*  this.DetailLandlord.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png' */
+                  this.DetailLandlord.user_photo = this.DetailLandlord.url
 
                   this.DetailList = res.data.data.commentVoList
 
-                  this.DetailList.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png'
+                  this.DetailList.user_photo = this.DetailList.url
 
                   document.getElementById('postErrts').style.display = 'none'
                   document.getElementsByClassName('w-e-text')[0].innerHTML = '<p><br/></p>'
@@ -734,7 +614,7 @@
           })
       }
     },
-    computed: {
+/*    computed: {
       indexs: function () {
         var left = 1
         var right = this.all
@@ -763,7 +643,7 @@
         }
         return ar
       }
-    },
+    }, */
     created: function () {
       this.postId = this.$route.params.id
       this.cur = this.$route.params.onPage
@@ -775,7 +655,7 @@
         this.isLogin = false
       } else {
         vm.$http({
-          url: 'http://192.168.103.195:8081/userInfo/get/' + userId,
+          url: 'http://localhost:8081/userInfo/get/' + userId,
           method: 'get',
           jsonp: 'callback',
           emulateJSON: true,
@@ -790,10 +670,8 @@
         })
       }
       vm.$http({
-        /* url: '//moment.snail.com/api/v1/post/detail-of-circle-post', */
-        url: 'http://192.168.103.195:8081/food/detail/' + this.postId,
+        url: 'http://localhost:8081/food/detail/' + this.postId,
         method: 'get',
-        /* jsonp: 'callback', */
         emulateJSON: true,
         headers: {
           'Content-Type': 'x-www-from-urlencoded'
@@ -803,11 +681,11 @@
         if (res.data.code === 200) {
           this.DetailLandlord = res.data.data
           this.DetailLandlord['onLandlord'] = false
-          this.DetailLandlord.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png'
-
+         //  this.DetailLandlord.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png'
+          this.DetailLandlord.user_photo = this.DetailLandlord.url
           this.DetailList = res.data.data.commentVoList
 
-          this.DetailList.user_photo = 'http://www.iplaystone.com/static/common/images/loginPic.png'
+          this.DetailList.user_photo = this.DetailLandlord.url
 
           for (var i in this.DetailList) {
             this.DetailList[i]['isMoudleListInput'] = false
@@ -823,9 +701,6 @@
       s.src = '//static.snail.com/js/stone/v2/statistics_ty_v2.source.js'
       document.body.appendChild(s)
       var editor = new E('#editorElem')
-      // editor.customConfig.onchange = (html) => {
-      //   this.editorContent = html
-      // }
       editor.customConfig.menus = []
       // editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
       editor.customConfig.pasteFilterStyle = true
@@ -880,7 +755,6 @@
         // console.log(url) // url 即插入图片的地址
       }
       editor.create()
-      // editor.txt.html('<p style="font-size:12px;color:#aaa;">请输入内容(～￣▽￣)～</p>')
       var _this = this
       document.getElementById('PostHtml').addEventListener('click', function () {
         console.log(editor.txt)

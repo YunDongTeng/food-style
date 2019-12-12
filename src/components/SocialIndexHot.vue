@@ -31,7 +31,7 @@ export default {
   created: function () {
     const vm = this
     vm.$http({
-      url: 'http://192.168.103.195:8081/food/topTen',
+      url: 'http://localhost:8081/food/topTen',
       method: 'get',
      // params: {'page': 1},
      // jsonp: 'callback',

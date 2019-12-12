@@ -1,6 +1,6 @@
 var urlObj = {
   /* baseUrl: 'http://192.168.103.195:8081', */
-  baseUrl: 'http://192.168.103.195:8081',
+  baseUrl: 'http://localhost:8081',
   indexUrl: 'http://localhost:8080'
 }
 
@@ -139,6 +139,29 @@ var stoneHeader = {
                       <div class="login_pop_btn"><button id="resetPwdSubmit">重置密码</button></div>\
                     </div>\
                     </div>\
+                      <div class="login_pop" id="userInfo_pop" style="top: 50px;width: 700px;height: 500px;">\
+                        <div class="login_pop_outer">\
+                        <i class="login_pop_cancle"></i>\
+                        <div class="login_pop_title">\
+                          <img src="http://www.iplaystone.com/static/common/images/loginPic.png" id="userHeadImg" style="width:100px; height: 100px;"/>\
+                          <input id="center_user_id" type="hidden" />\
+                          <div style="text-align: center"><input type="file" id="headFile" style="display: none;"/><button id="uploadHeadBtn">上传</button> </div>\
+                        </div>\
+                        <div class="login_pop_input"><input id="center_userName"  />\
+                        <i class="login_pop_icon login_pop_user"></i>\
+                        <div class="login_pop_error"></div>\
+                        </div>\
+                        <div class="login_pop_input"><input id="center_nickName" />\
+                        <i class="login_pop_icon login_pop_user"></i>\
+                        <div class="login_pop_error"></div>\
+                        </div>\
+                        <div class="login_pop_input"><input type="text" id="center_email" />\
+                        <i class="login_pop_icon login_pop_user"></i>\
+                        <div class="login_pop_error"></div>\
+                        </div>\
+                         <div style="text-align: center"><button id="centerSave">保存</button></div>\
+                      </div>\
+                      </div>\
                   <div class="serch_mask"></div>\
                   <div class="stone_mask" id="stone_mask">\
                   </div>')
@@ -159,6 +182,7 @@ var stoneHeader = {
                       <div class="stone_user_dropdown">\
                         <span class="stone_info_img"><img src=' + photoUrl + '></span>\
                         <div class="stone_no_hover" title="' + userInfo.nickname + '">' + userInfo.nickname + '</div>\
+                        <div id="userCenter">个人中心</div>\
                         <div id="eixt">退出</div>\
                       </div>\
                    </div>')
@@ -178,10 +202,80 @@ var stoneHeader = {
       document.getElementById('stone_mask').style.display = 'block'
     })
 
+    $('#userCenter').click(function () {
+      console.log()
+      document.getElementById('userInfo_pop').style.display = 'block'
+      document.getElementById('stone_mask').style.display = 'block'
+
+      $.ajax({
+        type: 'get',
+        url: 'http://localhost:8081/userInfo/get/'+window.localStorage.getItem('user_id'),
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function (res) {
+          console.log(res)
+          $("#center_userName").val(res.data.username)
+          $("#center_nickName").val(res.data.nickname)
+          $("#center_email").val(res.data.email)
+          if(res.data.url ==''){
+            $("#userHeadImg").attr('src','http://www.iplaystone.com/static/common/images/loginPic.png')
+          }else{
+            $("#userHeadImg").attr('src',res.data.url)
+          }
+
+          $("#center_user_id").val(res.data.id)
+        }
+      })
+    })
+    $(document).on('change','#userCenter input',function (e) {
+      console.log(e)
+    })
     $('#resetPwd').click(function () {
       document.getElementById('login_pop').style.display = 'none'
       document.getElementById('restpwd_pop').style.display = 'block'
       document.getElementById('stone_mask').style.display = 'block'
+    })
+
+    $("#headFile").change(function () {
+      var formData = new FormData();
+      formData.append("file",$("#headFile").get(0).files[0]);
+      console.log($("#headFile").get(0).files[0])
+
+
+      $.ajax({
+        type: 'POST',
+        url: 'http://122.51.148.46:8088/api/file/upload/photo',
+        dataType: 'json',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+          $("#userHeadImg").attr('src',res.data)
+        }
+      })
+
+    })
+    $("#uploadHeadBtn").click(function () {
+      document.getElementById('headFile').click()
+
+    })
+
+    $("#centerSave").click(function () {
+
+      console.log({'id': $("#center_user_id").val(),'url':$("#userHeadImg")[0].src,'nickname': $("#center_nickName").val(),'username': $("#center_userName").val(),'email': $("#center_email").val()})
+      $.ajax({
+        type: 'POST',
+        url: urlObj.baseUrl + '/userInfo/update',
+        dataType: 'json',
+        data: {'id': $("#center_user_id").val(),'url':$("#userHeadImg")[0].src,'nickname': $("#center_nickName").val(),'username': $("#center_userName").val(),'email': $("#center_email").val()},
+        success: function (res) {
+          if(res.code=200){
+            alert('修改成功')
+            window.location.href = urlObj.indexUrl
+          }
+        }
+      })
     })
 
     $('#eixt').click(function () {

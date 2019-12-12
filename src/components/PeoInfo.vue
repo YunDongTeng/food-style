@@ -2,7 +2,7 @@
   <div class="PeoInfo bgWhite" id="PeoInfo" style="">
     <div class="onLogin">
       <div class="PeoInfo-Hd">
-        <img src='http://www.iplaystone.com/static/common/images/loginPic.png'/>
+        <img :src="info.url"/>
       </div>
       <a href="javascript:;" class="PeoInfo-Name" :title="info.nickname">{{isLogin === true ? info.nickname : '游客'}}</a>
       <h6 :title="info.nickName" v-if="isLogin">{{info.nickName}} </h6>
@@ -14,9 +14,6 @@
         </button>
       </div>
       <div style="text-align: center;margin-top: 15px;margin-bottom: 10px;">
-        <!--
-                <button style="background-color: #00aaff;border: none; color: white; padding: 10px 30px; text-decoration: none;display: inline-block">我发布的</button>
-        -->
       </div>
       <div class="span" v-if="false">
         <a class="home cur" href="javascript:;">
@@ -47,9 +44,6 @@
       }
     },
     methods: {
-      showMoreMyCircleBtn: function () {
-        this.showMoreMyCircle = false
-      },
       handlePublish: function () {
         this.$router.push({path: '/SocialPost/new'})
       }
@@ -59,9 +53,10 @@
       const userId = window.localStorage.getItem('user_id')
       if (userId === null || userId === undefined) {
         this.isLogin = false
+        this.info.url = 'http://www.iplaystone.com/static/common/images/loginPic.png'
       } else {
         vm.$http({
-          url: 'http://192.168.103.195:8081/userInfo/get/' + userId,
+          url: 'http://localhost:8081/userInfo/get/' + userId,
           method: 'get',
           jsonp: 'callback',
           emulateJSON: true,
@@ -69,12 +64,10 @@
             'Content-Type': 'x-www-from-urlencoded'
           }
         }).then(function (res) {
-          console.log('PeopleInfo:')
-          console.log(res.data)
-          if (res.data.code === 200) {
-            this.info = res.data.data
-            this.isLogin = true
-          }
+          this.info = res.data.data
+          console.log(this.info)
+          this.isLogin = true
+          console.log(res)
         })
       }
     }

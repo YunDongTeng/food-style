@@ -23,19 +23,11 @@
   </div>
 </template>
 <script>
-  import SocialIndexHeader from './components/SocialIndexHeader.vue'
-  import SocialIndexAdmin from './components/SocialIndexAdmin.vue'
   import SocialIndexHot from './components/SocialIndexHot.vue'
-  import SocialIndexList from './components/SocialIndexList.vue'
-  import SocialIndexRecommend from './components/SocialIndexRecommend.vue'
   export default {
     name: 'SocialIndex',
     components: {
-      SocialIndexHeader: SocialIndexHeader,
-      SocialIndexAdmin: SocialIndexAdmin,
-      SocialIndexHot: SocialIndexHot,
-      SocialIndexList: SocialIndexList,
-      SocialIndexRecommend: SocialIndexRecommend
+      SocialIndexHot: SocialIndexHot
     },
     data () {
       return {
@@ -75,11 +67,9 @@
         if (this.scrolled > 1236) {
           this.isShow = true
           this.isGoTop = true
-          document.getElementById('SocialIndexRecommend').classList.add('fixed')
           document.getElementById('MainMoudle').children[0].classList.add('hfixed')
         } else if (this.scrolled < 800) {
           document.getElementById('MainMoudle').children[0].classList.remove('hfixed')
-          document.getElementById('SocialIndexRecommend').classList.remove('fixed')
           this.isShow = false
           this.isGoTop = false
         }

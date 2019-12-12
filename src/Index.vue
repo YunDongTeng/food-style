@@ -7,27 +7,21 @@
         <div class="MainMoudle fr" id="MainMoudle">
           <PeoInfo :showMoreMyCircle.sync="showMoreMyCircle"></PeoInfo>
           <SocialIndexHot></SocialIndexHot>
-         <!-- <SocialIndexRecommend></SocialIndexRecommend>-->
           <span class="goTop cur" v-show="isGoTop" @click="goTop()" style="bottom:145px;"></span>
         </div>
      </div>
-     <LoginPop :ispop.sync="ispop"></LoginPop>
   </div>
 </template>
 <script>
   import PeoInfo from './components/PeoInfo.vue'
-  import LoginPop from './components/LoginPop.vue'
   import SocialIndexHot from './components/SocialIndexHot.vue'
   import IndexList from './components/IndexList.vue'
-  import SocialIndexRecommend from './components/SocialIndexRecommend.vue'
   export default {
     name: 'SocialIndex',
     components: {
-      LoginPop: LoginPop,
       PeoInfo: PeoInfo,
       SocialIndexHot: SocialIndexHot,
-      IndexList: IndexList,
-      SocialIndexRecommend: SocialIndexRecommend
+      IndexList: IndexList
     },
     data () {
       return {
@@ -61,19 +55,12 @@
       },
       handleScroll () {
         this.scrolled = window.scrollY
-        // if (this.scrolled > 180) {
-        //   document.getElementById('IndexListType').style.position = 'fixed'
-        // } else {
-        //   document.getElementById('IndexListType').style.position = 'static'
-        // }
         if (this.scrolled > 900) {
           this.isShow = true
           this.isGoTop = true
-       //   document.getElementById('SocialIndexRecommend').classList.add('fixed3')
           document.getElementById('PeoInfo').classList.add('hfixed')
         } else if (this.scrolled < 800) {
           document.getElementById('PeoInfo').classList.remove('hfixed')
-          document.getElementById('SocialIndexRecommend').classList.remove('fixed3')
           this.isShow = false
           this.isGoTop = false
           this.showMoreMyCircle = true
